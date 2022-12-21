@@ -1,9 +1,7 @@
 package neta.mappers;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,6 +14,14 @@ public final class Mappers {
 
     public static <T, R> Set<R> map(Set<T> toMap, Function<T, R> mapper) {
         return mappedStream(toMap, mapper).collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static <T, R> R[] map(T[] toMap, Class<R> returnType, Function<T, R> mapper) {
+        return Arrays.stream(toMap).map(mapper).toArray(size -> (R[]) Array.newInstance(returnType, size));
+    }
+
+    public static <T, R> R[] map(Class<R> returnType, Function<T, R> mapper, T... toMap) {
+        return map(toMap, returnType, mapper);
     }
 
     public static <T, K, V> Map<K, V> associate(Collection<T> toAssociate, Function<T, K> keyMapper, Function<T, V> valueMapper) {

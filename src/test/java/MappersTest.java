@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MappersTest {
@@ -23,6 +24,14 @@ public class MappersTest {
         var expectedSet = Set.of("1", "2", "3");
 
         assertEquals(expectedSet, mappedSet);
+    }
+
+    @Test
+    public void mapVararg() {
+        var mappedVarargs = Mappers.map(String.class, it -> it.toString(), 1, 2, 3);
+        var expected = new String[] {"1", "2", "3"};
+
+        assertArrayEquals(expected, mappedVarargs);
     }
 
     @Test
