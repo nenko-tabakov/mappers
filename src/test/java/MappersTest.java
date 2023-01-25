@@ -1,9 +1,7 @@
 import neta.mappers.Mappers;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -88,6 +86,70 @@ public class MappersTest {
         var expected = Set.of("1", "2","3","10","20","30");
 
         assertEquals(expected, flattenedList);
+    }
+
+    @Test
+    public void filterNotNullInList() {
+        var toFilter = new ArrayList<Integer>();
+        toFilter.add(1);
+        toFilter.add(2);
+        toFilter.add(null);
+        toFilter.add(3);
+        var filtered = Mappers.filterNotNull(toFilter);
+        var expected = List.of(1, 2, 3);
+
+        assertEquals(expected, filtered);
+    }
+
+    @Test
+    public void filterNotNullInSet() {
+        var toFilter = new HashSet<Integer>();
+        toFilter.add(1);
+        toFilter.add(2);
+        toFilter.add(null);
+        toFilter.add(3);
+        var filtered = Mappers.filterNotNull(toFilter);
+        var expected = Set.of(1, 2, 3);
+
+        assertEquals(expected, filtered);
+    }
+
+    @Test
+    public void mapNotNullInList() {
+        var toFilter = new ArrayList<Integer>();
+        toFilter.add(1);
+        toFilter.add(2);
+        toFilter.add(null);
+        toFilter.add(3);
+        var mapped = Mappers.mapNotNull(toFilter, it -> {
+            if (it != null) {
+                return String.valueOf(it);
+            }
+
+            return null;
+        });
+        var expected = List.of("1", "2", "3");
+
+        assertEquals(expected, mapped);
+    }
+
+    @Test
+    public void mapNotNullInSet() {
+        var toFilter = new HashSet<Integer>();
+        toFilter.add(1);
+        toFilter.add(2);
+        toFilter.add(null);
+        toFilter.add(3);
+        var mapped = Mappers.mapNotNull(toFilter, it -> {
+            if (it != null) {
+                return String.valueOf(it);
+            }
+
+            return null;
+        });
+        var expected = Set.of("1", "2", "3");
+
+        assertEquals(expected, mapped);
     }
 
 }

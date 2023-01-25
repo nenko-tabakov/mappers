@@ -52,7 +52,32 @@ public final class Mappers {
         return toFlatten.stream().flatMap(mapper).collect(Collectors.toUnmodifiableSet());
     }
 
+    public static <T> List<T> filterNotNull(List<T> toFilter) {
+        return filteredNotNullStream(toFilter).collect(Collectors.toUnmodifiableList());
+    }
+
+    public static <T> Set<T> filterNotNull(Set<T> toFilter) {
+        return filteredNotNullStream(toFilter).collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static <T, R> List<R> mapNotNull(List<T> toMap, Function<T, R> mapper) {
+        return filteredNotNullStream(mappedStream(toMap, mapper)).collect(Collectors.toUnmodifiableList());
+    }
+
+    public static <T, R> Set<R> mapNotNull(Set<T> toMap, Function<T, R> mapper) {
+        return filteredNotNullStream(mappedStream(toMap, mapper)).collect(Collectors.toUnmodifiableSet());
+    }
+
+    private static <T> Stream<T> filteredNotNullStream(Collection<T> toFilter) {
+        return filteredNotNullStream(toFilter.stream());
+    }
+
+    private static <T> Stream<T> filteredNotNullStream(Stream<T> stream) {
+        return stream.filter(it -> it != null);
+    }
+
     private static <T, R> Stream<R> mappedStream(Collection<T> toMap, Function<T, R> mapFunction) {
+        toMap.stream().findAny();
         return toMap.stream().map(mapFunction);
     }
 }
