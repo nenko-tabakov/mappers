@@ -90,4 +90,12 @@ public class MappersTest {
         assertEquals(expected, flattenedList);
     }
 
+    @Test
+    public void filterNotNull() {
+        var filteredList = Mappers.filterNotNull(List.of(1, 2, null, 3));
+        var expectedList = List.of(1, 2, 3);
+
+        assertEquals(expectedList, filteredList);
+    }
+
 }
